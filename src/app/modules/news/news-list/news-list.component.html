@@ -1,0 +1,20 @@
+<section id="content-viewport">
+  <mat-tab-group (selectedTabChange)="refreshData($event)">
+    <mat-tab label="News">
+      <app-new-card
+        *ngFor="let newEntity of news$ | async"
+        [newEntity]="newEntity"
+        (clickArchive)="archiveNew($event)"
+      >
+      </app-new-card>
+    </mat-tab>
+    <mat-tab label="Archived">
+      <app-new-card
+        *ngFor="let newEntity of archivedNews$ | async"
+        [newEntity]="newEntity"
+        (clickDelete)="deleteNew($event)"
+      >
+      </app-new-card>
+    </mat-tab>
+  </mat-tab-group>
+</section>
