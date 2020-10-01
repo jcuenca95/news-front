@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatTabChangeEvent, MatTabGroup } from "@angular/material";
 import { New } from "../news.entity";
 import { NewsService } from "../services/news.service";
+import { WebsocketService } from "../services/websocket.service";
 
 @Component({
   selector: "app-news-list",
@@ -11,13 +12,20 @@ import { NewsService } from "../services/news.service";
 export class NewsListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
 
-  constructor(private newsService: NewsService) {}
+  constructor(
+    private newsService: NewsService,
+    private websocketService: WebsocketService
+  ) {}
 
   ngAfterViewInit(): void {
     this.refreshData({ index: 0, tab: null });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.websocketService.listen("message").subscribe((data) => {
+      console.log(data);
+    });
+  }
 
   get news$() {
     return this.newsService.news$;
