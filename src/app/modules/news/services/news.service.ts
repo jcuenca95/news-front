@@ -1,8 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { tap } from "rxjs/operators";
-import { Pagination } from "src/app/shared/entities/pagination.entity";
+import { BehaviorSubject, Observable } from "rxjs";
+import { shareReplay, tap } from "rxjs/operators";
 import { environment } from "../../../../environments/environment";
 import { New } from "../news.entity";
 
@@ -12,66 +11,44 @@ import { New } from "../news.entity";
 export class NewsService {
   private resourceURL = environment.apiUrl + "news";
 
-  private _news$: BehaviorSubject<Array<New>> = new BehaviorSubject<Array<New>>(
-    new Array<New>()
-  );
-  private _archivedNews$: BehaviorSubject<Array<New>> = new BehaviorSubject<
-    Array<New>
-  >(new Array<New>());
-  private _totalElements$: BehaviorSubject<number> = new BehaviorSubject<
-    number
-  >(0);
+  private _news$: Observable<Array<New>>;
+  private _archivedNews$: Observable<Array<New>>;
 
   constructor(private http: HttpClient) {}
 
   get news$() {
+    if (!this._news$) {
+      this._news$ = this.http
+        .get<Array<New>>(this.resourceURL, {
+          params: {
+            archiveDate: "false",
+          },
+        })
+        .pipe(shareReplay(0));
+    }
     return this._news$;
   }
 
   get archivedNews$() {
+    if (!this._archivedNews$) {
+      this._archivedNews$ = this.http
+        .get<Array<New>>(this.resourceURL, {
+          params: {
+            archiveDate: "true",
+            sort: "archiveDate,DESC",
+          },
+        })
+        .pipe(shareReplay(0));
+    }
     return this._archivedNews$;
   }
 
-  get totalElements() {
-    return this._totalElements$;
-  }
   public refreshNews() {
-    const subscribe = this.http
-      .get<Pagination<New>>(this.resourceURL, {
-        params: {
-          archiveDate: "false",
-        },
-      })
-      .pipe(
-        tap((result) => {
-          this._news$.next(result.docs);
-          this._totalElements$.next(result.totalDocs);
-        })
-      )
-      .subscribe(
-        () => subscribe.unsubscribe,
-        () => subscribe.unsubscribe
-      );
+    this._news$ = null;
   }
 
   public refreshArchivedNews() {
-    const subscribe = this.http
-      .get<Pagination<New>>(this.resourceURL, {
-        params: {
-          archiveDate: "true",
-          sort: "archiveDate,DESC",
-        },
-      })
-      .pipe(
-        tap((result) => {
-          this._archivedNews$.next(result.docs);
-          this._totalElements$.next(result.totalDocs);
-        })
-      )
-      .subscribe(
-        () => subscribe.unsubscribe,
-        () => subscribe.unsubscribe
-      );
+    this._archivedNews$ = null;
   }
 
   public archiveNew(id: string) {
