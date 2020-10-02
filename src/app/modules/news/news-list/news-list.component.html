@@ -4,6 +4,7 @@
       <app-new-card
         *ngFor="let newEntity of news$ | async"
         [newEntity]="newEntity"
+        [@newAnimation]
         (clickArchive)="archiveNew($event)"
       >
       </app-new-card>
@@ -12,6 +13,7 @@
       <app-new-card
         *ngFor="let newEntity of archivedNews$ | async"
         [newEntity]="newEntity"
+        [@newAnimation]
         (clickDelete)="deleteNew($event)"
       >
       </app-new-card>

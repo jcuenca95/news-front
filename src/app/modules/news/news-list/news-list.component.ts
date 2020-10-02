@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from "@angular/animations";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatTabChangeEvent, MatTabGroup } from "@angular/material";
 import { New } from "../news.entity";
@@ -7,6 +8,34 @@ import { NewsService } from "../services/news.service";
   selector: "app-news-list",
   templateUrl: "./news-list.component.html",
   styleUrls: ["./news-list.component.scss"],
+  animations: [
+    trigger("newAnimation", [
+      transition("void => *", [
+        style({
+          height: 0,
+          opacity: 0,
+          transform: "scale(0.85)",
+          "margin-bottom": 0,
+          paddingTop: 0,
+          paddingBottom: 0,
+          paddingLeft: 0,
+          paddingRight: 0,
+        }),
+        animate(
+          "50ms",
+          style({
+            height: "*",
+            "margin-bottom": "*",
+            paddingTop: "*",
+            paddingBottom: "*",
+            paddingRight: "*",
+            paddingLeft: "*",
+          })
+        ),
+        animate(200),
+      ]),
+    ]),
+  ],
 })
 export class NewsListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatTabGroup) matTabGroup: MatTabGroup;
