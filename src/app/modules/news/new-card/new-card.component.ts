@@ -21,4 +21,12 @@ export class NewCardComponent implements OnInit {
   emitDelete() {
     this.clickDelete.emit(this.newEntity);
   }
+
+  get shownDate() {
+    if (this.newEntity.archiveDate) {
+      return this.newEntity.archiveDate;
+    } else {
+      return this.newEntity.createdAt;
+    }
+  }
 }

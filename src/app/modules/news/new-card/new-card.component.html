@@ -1,7 +1,10 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>{{ newEntity.title }}</mat-card-title>
-    <mat-card-subtitle>{{ newEntity.author }}</mat-card-subtitle>
+    <mat-card-subtitle
+      >{{ newEntity.author }},
+      {{ shownDate | date: "dd/MM/yyyy HH:MM" }}</mat-card-subtitle
+    >
   </mat-card-header>
   <mat-card-content>
     <p>{{ newEntity.content }}</p>
