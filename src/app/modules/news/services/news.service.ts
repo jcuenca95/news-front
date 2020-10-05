@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { shareReplay, tap } from "rxjs/operators";
 import { environment } from "../../../../environments/environment";
 import { New } from "../news.entity";
+import * as io from "socket.io-client";
 
 @Injectable({
   providedIn: "root",
@@ -13,8 +14,14 @@ export class NewsService {
 
   private _news$: Observable<Array<New>>;
   private _archivedNews$: Observable<Array<New>>;
+  private socket;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.socket = io(environment.websocketUrl);
+    this.socket.on("refresh", (data) => {
+      this.refreshNews();
+    });
+  }
 
   get news$() {
     if (!this._news$) {
