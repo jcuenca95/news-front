@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/theming";
+@include mat-core();
+
+$md-news: (
+  50: #edf5ea,
+  100: #d2e5ca,
+  200: #b5d4a7,
+  300: #97c284,
+  400: #80b569,
+  500: #6aa84f,
+  600: #62a048,
+  700: #57973f,
+  800: #4d8d36,
+  900: #3c7d26,
+  A100: #cdffbe,
+  A200: #a6ff8b,
+  A400: #7fff58,
+  A700: #6cff3f,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$news-theme-primary: mat-palette($md-news);
+$news-theme-accent: mat-palette($mat-orange, A200, A100, A400);
+$news-theme-warn: mat-palette($mat-red);
+
+$news-theme: mat-light-theme(
+  $news-theme-primary,
+  $news-theme-accent,
+  $news-theme-warn
+);
+@include angular-material-theme($news-theme);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-card {
+  border: 1px solid #ddd;
+}
+
+mat-card:hover {
+  border: 1px solid #3c7d26;
+  mat-icon {
+    color: #3c7d26;
+  }
+  mat-card-title {
+    color: #3c7d26;
+  }
+}

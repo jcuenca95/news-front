@@ -1,1 +1,1 @@
-# news-front
+News app

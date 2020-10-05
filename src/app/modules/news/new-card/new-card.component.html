@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ newEntity.title }}</mat-card-title>
+    <mat-card-subtitle
+      >{{ newEntity.author }},
+      {{ shownDate | date: "dd/MM/yyyy" }}</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ newEntity.content }}</p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button
+      *ngIf="!newEntity.archiveDate"
+      mat-icon-button
+      (click)="emitArchive()"
+    >
+      <mat-icon>archive</mat-icon>
+    </button>
+
+    <button
+      *ngIf="newEntity.archiveDate"
+      mat-icon-button
+      (click)="emitDelete()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
